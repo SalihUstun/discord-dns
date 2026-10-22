@@ -10,10 +10,11 @@
 
 ### Windows
 
-1. `discord-dns-windows-x64.exe` dosyasına çift tıkla.
-2. Çıkan pencerede **Evet**'e bas.
+1. `Discord-DNS-Setup.exe` dosyasına çift tıkla ve **Evet**'e bas.
+2. Sihirbazda **İleri → Kabul Ediyorum → Bitir**.
 
 "Windows bilgisayarınızı korudu" uyarısı çıkarsa: **Ek bilgi → Yine de çalıştır**.
+Güncellemek için yeni sürümün kurulum dosyasını çalıştır. Kaldırmak için: **Ayarlar → Uygulamalar → Discord DNS → Kaldır**.
 
 ### Mac
 
@@ -29,7 +30,7 @@ Kurulumdan sonra Discord'u tamamen kapatıp yeniden aç. Program bilgisayar her 
 
 ## Kullanım
 
-Programı kurduktan sonra tekrar açarsan **Güncelle / Kaldır / Durum** seçenekleri çıkar. Kaldırınca DNS ayarların kurulum öncesi haline döner.
+Mac'te uygulamayı kurduktan sonra tekrar açarsan **Kaldır / Yeniden Kur** seçenekleri çıkar. Kaldırınca DNS ayarların kurulum öncesi haline döner.
 
 Terminalden de kullanılabilir:
 
@@ -49,7 +50,7 @@ discord-dns -v           ayrıntılı log ile kur
 
 ## Kaynaktan derleme
 
-[Go](https://go.dev) gerekir.
+[Go](https://go.dev) ve Windows kurulum dosyası için [NSIS](https://nsis.sourceforge.io) (`brew install makensis`) gerekir.
 
 ```bash
 ./build.sh       # dist/ klasörüne Mac ve Windows dosyalarını üretir

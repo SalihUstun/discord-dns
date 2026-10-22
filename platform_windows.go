@@ -12,6 +12,7 @@ import (
 	"syscall"
 
 	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 func programFiles() string {
@@ -70,13 +71,18 @@ func removeLoopbackAlias(ip string) {}
 
 func removeLegacy() {}
 
+const uninstallRegKey = `Software\Microsoft\Windows\CurrentVersion\Uninstall\discord-dns`
+
 func removeInstalledExe() error {
+	registry.DeleteKey(registry.LOCAL_MACHINE, uninstallRegKey)
 	dir := filepath.Dir(installedExePath())
 	self, _ := os.Executable()
 	if samePath(self, installedExePath()) {
-
-		cmd := exec.Command("cmd", "/C", "ping 127.0.0.1 -n 3 > nul & rmdir /S /Q \""+dir+"\"")
-		cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+		cmd := exec.Command("cmd")
+		cmd.SysProcAttr = &syscall.SysProcAttr{
+			HideWindow: true,
+			CmdLine:    `cmd /C "ping 127.0.0.1 -n 3 > nul & rmdir /S /Q "` + dir + `""`,
+		}
 		return cmd.Start()
 	}
 	err := os.RemoveAll(dir)

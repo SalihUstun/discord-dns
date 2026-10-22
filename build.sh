@@ -79,7 +79,17 @@ trap 'rm -f rsrc_windows_*.syso' EXIT
 GOOS=windows GOARCH=amd64 go build "${FLAGS[@]}" -o dist/discord-dns-windows-x64.exe .
 GOOS=windows GOARCH=arm64 go build "${FLAGS[@]}" -o dist/discord-dns-windows-arm64.exe .
 
+WINVER4="$WINVER"
+while [ "$(echo "$WINVER4" | tr -cd . | wc -c)" -lt 3 ]; do WINVER4="$WINVER4.0"; done
+LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 makensis -V2 -INPUTCHARSET UTF8 \
+  -DVERSION="$VERSION" -DWINVER4="$WINVER4" \
+  -DOUTFILE="$PWD/dist/Discord-DNS-Setup.exe" \
+  -DEXE_X64="$PWD/dist/discord-dns-windows-x64.exe" \
+  -DEXE_ARM64="$PWD/dist/discord-dns-windows-arm64.exe" \
+  -DICON="$PWD/assets/icon.ico" -DLICENSE="$PWD/LICENSE" \
+  installer/windows.nsi
+
 cp LICENSE dist/LICENSE.txt
 cp THIRD_PARTY_LICENSES.txt dist/
-(cd dist && shasum -a 256 discord-dns-mac.zip discord-dns-windows-*.exe > SHA256SUMS.txt)
+(cd dist && shasum -a 256 discord-dns-mac.zip Discord-DNS-Setup.exe discord-dns-windows-*.exe > SHA256SUMS.txt)
 ls -lh dist
